@@ -6,6 +6,7 @@
 #include "robot.hpp"
 #include "skills_auton.h"
 #include "finals_auton.h"
+#include "helpers.hpp"
 
 ASSET(path1_txt);
 ASSET(path3_txt);
@@ -14,7 +15,7 @@ ASSET(testpath_txt);
 void auton(int autonToRun) {
     if (autonToRun == 0)
     {
-        skills_auton();
+        new_skills_auton();
     }
 
     if (autonToRun == 1)
@@ -35,15 +36,19 @@ void auton(int autonToRun) {
     {
         finals_right_auton();
     }
+
+    if (autonToRun == 5)
+    {
+        pid_test();
+    }
 };
 
 void Left_7B_2G()
 {
     // Initialise
     chassis.setPose(-50.425, 15, 0);
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Switcheroo.retract();
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
 
     // Move to matchloader
     chassis.moveToPose(-47, 45, 0, 1000);
@@ -68,10 +73,8 @@ void Left_7B_2G()
     chassis.waitUntilDone();
 
     // Score all 3 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
     pros::delay(2700);
 
     // Move back slightly
@@ -80,13 +83,12 @@ void Left_7B_2G()
 
     // Intake 3 blocks and score in the high goal
     Top_Roller.move_velocity(-8000);
-    Switcheroo.toggle();
+    setBlockMovementTarget(HIGH_GOAL);
     chassis.moveToPoint(-24.8, 10, 2000, {.maxSpeed = 70});
     chassis.waitUntilDone();
 
     // Pause
     pros::delay(900);
-    Bottom_Roller.brake();
 
     // Ram
     chassis.moveToPoint(-20, 10,2000, {.minSpeed = 100});
@@ -97,9 +99,8 @@ void Right_7B_2G()
     right_mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     left_mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     chassis.setPose(50.425, 15, 0);
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Switcheroo.retract();
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
 
     // Move to matchloader
     chassis.moveToPose(47, 48, 0, 1000);
@@ -124,10 +125,8 @@ void Right_7B_2G()
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
     pros::delay(2700);
     // Inside_Roller.brake();
     // Switcheroo.toggle();
@@ -141,21 +140,7 @@ void Right_7B_2G()
     chassis.moveToPoint(25, 16.7, 2000, {.maxSpeed = 50});
     
     chassis.waitUntilDone();
-    Inside_Roller.move_velocity(-75);
-    Top_Roller.move_velocity(-32);
+    // Inside_Roller.move_velocity(-75);
+    // Top_Roller.move_velocity(-32);
     Matchloader.toggle();
-}
-
-void StartIntake()
-{
-    Inside_Roller.brake();
-    Top_Roller.move(12000);
-    Bottom_Roller.move(-12000);
-}
-
-void StopIntake()
-{
-    Inside_Roller.brake();
-    Top_Roller.brake();
-    Bottom_Roller.brake();
 }

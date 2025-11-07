@@ -25,7 +25,6 @@ void initialize() {
 	chassis.calibrate();
 	ODOM_Lift.retract();
 	// imu.reset(true);
-	SkIbIdI_oPtIcAl.set_led_pwm(100);
 
     // pros::lcd::initialize();
     // pros::Task screenTask([&]()->void {
@@ -80,7 +79,8 @@ void autonomous() {
 	// 2 = right match
 	// 3 = left finals match
 	// 4 = right finals match
-	auton(0);
+	// 5 = pid test
+	auton(5);
 	// // Auton selector
 	// int autonToRun;
 	// // Loop until a valid button is pressed to select an auton
@@ -132,19 +132,12 @@ void opcontrol() {
 		chassis.arcade(forwards, turn);
 
 		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-			Bottom_Roller.move_voltage(12000);
+			bottomRollerMove(-12000);
 		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-			Bottom_Roller.move_voltage(-12000);
+			bottomRollerMove(12000);
 		} else {
-			Bottom_Roller.move(0);
+			bottomRollerMove(0);
 		}	
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-			Inside_Roller.move(12000);
-		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-			Inside_Roller.move(-12000);
-		} else {
-			Inside_Roller.move(0);
-		}
 		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
 			Top_Roller.move_voltage(12000);
 		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
@@ -161,9 +154,9 @@ void opcontrol() {
 		 
 		// Matchloader and Switcheroo have activation buttons opposite to the actual buttons that activate them.
 		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
-			Switcheroo.extend();
+			setBlockMovementTarget(LONG_GOAL);
 		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-			Switcheroo.retract();
+			setBlockMovementTarget(INTAKE);
 		}
 
 		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){

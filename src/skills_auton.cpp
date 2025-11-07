@@ -3,7 +3,12 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
 #include "robot.hpp"
-
+#include "helpers.hpp"
+ASSET(singlepath_auton_skills_61pt)
+ASSET(testpath_txt)
+ASSET(as_right_s_to_ml_txt)
+ASSET(as_right_ml_to_lg_txt)
+ASSET(as_right_lg_to_ml2_txt)
 void skills_auton() {
     // Bottom_Roller.move(-12000);
     // Top_Roller.move(12000);
@@ -13,9 +18,8 @@ void skills_auton() {
     // chassis.moveToPoint(-62.87, -8.335, 3000);
 
     chassis.setPose(45.65, 16.9, 0);
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Switcheroo.retract();
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
     float firstMatchloaderY = 47.4;
     // Move to matchloader
     chassis.moveToPose(42.5, firstMatchloaderY, 0, 1000);
@@ -45,16 +49,14 @@ void skills_auton() {
     chassis.waitUntilDone();
 
     // Score all 7 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-11000);
-    Top_Roller.move(11000);
-    Inside_Roller.move(-11000);
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
     pros::delay(4700);
 
     // Reverse slightly
     chassis.moveToPoint(51.5, firstMatchloaderY, 1500, {.forwards = false});
     chassis.waitUntilDone();
-    Switcheroo.toggle();
+    setBlockMovementTarget(INTAKE);
     chassis.turnToHeading(225, 70, {.direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
     Top_Roller.move(12000);
 
@@ -73,20 +75,16 @@ void skills_auton() {
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
     pros::delay(2900);
-    Switcheroo.toggle();
+    swapScoringTarget();
 
     // Move back
     chassis.moveToPoint(38, firstMatchloaderY,  1000, {.forwards = false});
     chassis.waitUntilDone();
     chassis.turnToHeading(0, 1000);
-    Top_Roller.move(0);
-    Inside_Roller.move(0);
-    Bottom_Roller.move(0);
+    stopScoring();
 
     // // SETUP FROM CORNER ================================================
     // Bottom_Roller.move(-12000);
@@ -105,8 +103,8 @@ void skills_auton() {
 
     // Collect blocks from matchloader
     Matchloader.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
     chassis.moveToPose(52, secondMatchloaderY, 90, 1500,{.maxSpeed = 70});
     for (int i = 0; i < 7; i++) {
         chassis.moveToPoint(56, secondMatchloaderY, 450, {.minSpeed = 100});
@@ -127,13 +125,11 @@ void skills_auton() {
     pros::delay(200);
 
     // Score all 6 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
     pros::delay(4400);
 
-    Switcheroo.toggle();
+    setBlockMovementTarget(INTAKE);
 
     // Reverse slightly
     chassis.moveToPoint(47, secondMatchloaderY, 2000, {.forwards = false});
@@ -143,7 +139,8 @@ void skills_auton() {
     Top_Roller.move(12000);
 
     // Intake 4 more blocks
-    Inside_Roller.move(0);
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
     chassis.moveToPoint(10, -24, 3000, {.maxSpeed = 70});
     chassis.waitUntilDone();
     pros::delay(200);
@@ -160,12 +157,10 @@ void skills_auton() {
     pros::delay(200);
 
     // Score all 4 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
     pros::delay(3000);
-    Switcheroo.toggle();
+    setBlockMovementTarget(INTAKE);
 
     // // SETUP FOR PARK ======================================================================
     // chassis.setPose(lemlib::Pose(26, -46.3, 270));
@@ -176,7 +171,7 @@ void skills_auton() {
 
     // Park and clear park zone
     ODOM_Lift.extend();
-    Bottom_Roller.move(12000);
+    bottomRollerMove(12000);
     chassis.moveToPoint(49, secondMatchloaderY, 1200, {.forwards = false, .minSpeed = 70});
     chassis.waitUntilDone();
     pros::delay(100);
@@ -186,3 +181,19 @@ void skills_auton() {
     chassis.moveToPoint(68.5, 8.8, 15000, {.minSpeed = 85});
     right_mg.move_velocity(450);
 };
+
+void new_skills_auton()
+{
+    chassis.setPose(-46.997, -15.275, 90);
+    startIntaking();
+    chassis.follow(as_right_s_to_ml_txt, 1.3, 2000, true, false);
+    stopIntaking();
+    chassis.follow(as_right_ml_to_lg_txt, 1.3, 2000, true, false);
+    chassis.follow(as_right_lg_to_ml2_txt, 1.3, 2000, true, false);
+}
+
+void pid_test()
+{
+    chassis.setPose(-61.878, -16.42,  90);
+    chassis.follow(testpath_txt, 1.3, 3000, true, false);
+}

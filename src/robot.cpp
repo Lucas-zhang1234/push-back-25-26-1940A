@@ -1,27 +1,23 @@
 #include "robot.hpp"
+#include "lemlib/chassis/trackingWheel.hpp"
+#include "pros/abstract_motor.hpp"
 #include "pros/adi.hpp"
 #include "pros/optical.hpp"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::Controller partner(pros::E_CONTROLLER_PARTNER);
 
-pros::MotorGroup left_mg({-3, -4, -5});
-pros::MotorGroup right_mg({9, 7, 6});
+pros::MotorGroup left_mg({-18, -20, -19});    
+pros::MotorGroup right_mg({12, 14, 13});
 
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg,
-                              13.25, // track width in inches
-                              lemlib:: Omniwheel:: NEW_325, // Wheel configuration
-                              450, // RPM
+                              11.301, // track width in inches
+                              lemlib::Omniwheel::NEW_4, // Wheel configuration
+                              400, // RPM
                               2 // Drift was 2  0.5
 );
 
-pros::Imu imu(8); 
-
-pros::Rotation horizontalRotation(20); 
-pros::Rotation verticallRotation(11); 
-
-lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_2, -4);
-lemlib::TrackingWheel vertical_tracking_wheel(&verticallRotation, lemlib::Omniwheel::NEW_2, 0);
+pros::Imu imu(9); 
 
 
 lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1, set to null
@@ -63,15 +59,11 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
                         sensors // odometry sensors
 );
 
-
-pros::Motor Bottom_Roller(1, pros::v5::MotorGears::blue);
-pros::Motor Top_Roller(12, pros::v5::MotorGears::green);
-pros::Motor Inside_Roller(19, pros::v5::MotorGears::green);
+pros::Motor Top_Roller(1, pros::v5::MotorGears::green);
+pros::Motor Bottom_Roller_Blue(21, pros::v5::MotorGears::blue);
+pros::Motor Bottom_Roller_Green(2, pros::v5::MotorGears::green);
 
 
 pros::adi::Pneumatics Double_Park({22, 'g'}, true);            // Starts retracted, extends when the ADI port is high
-pros::adi::Pneumatics Switcheroo({22, 'f'}, false);
 pros::adi::Pneumatics Matchloader({22, 'h'}, false);
-pros::adi::Pneumatics ODOM_Lift({22,'e'},false);
-
-pros::Optical SkIbIdI_oPtIcAl(2);
+pros::adi::Pneumatics ODOM_Lift({22, 'e'},false);

@@ -3,13 +3,13 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "lemlib/pose.hpp"
 #include "robot.hpp"
+#include "helpers.hpp"
 
 void finals_right_auton()
 {
     chassis.setPose(45.65, 16.9, 0);
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Switcheroo.retract();
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
 
     // Move to matchloader
     chassis.moveToPose(42.5, 46.9, 0, 1000);
@@ -34,16 +34,13 @@ void finals_right_auton()
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    pros::delay(2800);
-    Inside_Roller.move_velocity(0);
-    pros::delay(100);
+    startScoring();
+    pros::delay(2900);
 
     // Reverse slightly
     chassis.moveToPoint(51.5, 47.3, 1500, {.forwards = false});
     chassis.waitUntilDone();
-    Switcheroo.toggle();
+    setBlockMovementTarget(INTAKE);
     chassis.turnToHeading(225, 70, {.direction = lemlib::AngularDirection::CCW_COUNTERCLOCKWISE});
     Top_Roller.move(12000);
 
@@ -62,18 +59,13 @@ void finals_right_auton()
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    startScoring();
 }
 
 void finals_left_auton()
 {
     chassis.setPose(45.65, -16.9, 180);
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Switcheroo.retract();
+    startIntaking();
 
     // Move to matchloader
     chassis.moveToPose(42.5, -47, 0, 1000);
@@ -102,13 +94,9 @@ void finals_left_auton()
     pros::delay(300);
 
     // Score all 7 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    startScoring();
+    setBlockMovementTarget(LONG_GOAL);
     pros::delay(4000);
-
-    Switcheroo.toggle();
 
     // Reverse slightly
     chassis.moveToPoint(47, -46.35, 2000, {.forwards = false});
@@ -118,7 +106,7 @@ void finals_left_auton()
     Top_Roller.move(12000);
 
     // Intake 4 more blocks
-    Inside_Roller.move(0);
+    startIntaking();
     chassis.moveToPoint(16, -16, 3000, {.maxSpeed = 70});
     chassis.waitUntilDone();
     pros::delay(400);
@@ -135,10 +123,6 @@ void finals_left_auton()
     pros::delay(300);
 
     // Score all 4 blocks in the long goal
-    Switcheroo.extend();
-    Bottom_Roller.move(-12000);
-    Top_Roller.move(12000);
-    Inside_Roller.move(-12000);
+    startScoring();
     pros::delay(3200);
-    Switcheroo.toggle();
 }

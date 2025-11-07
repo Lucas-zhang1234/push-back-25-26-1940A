@@ -11,8 +11,8 @@ extern lemlib::Drivetrain drivetrain;
 
 extern pros::Imu imu;
 
-extern pros:: Rotation horizontalRotation;
-extern pros:: Rotation verticallRotation;
+extern pros::Rotation horizontalRotation;
+extern pros::Rotation verticallRotation;
 
 extern lemlib::TrackingWheel horizontalTrackingWheel;
 
@@ -26,13 +26,10 @@ extern lemlib::ControllerSettings angular_controller;
 
 extern lemlib::Chassis chassis;
 
-extern pros::Motor Bottom_Roller;
 extern pros::Motor Top_Roller;
-extern pros::Motor Inside_Roller;
+extern pros::Motor Bottom_Roller_Blue;
+extern pros::Motor Bottom_Roller_Green;
 
 extern pros::adi::Pneumatics Double_Park;
-extern pros::adi::Pneumatics Switcheroo;
 extern pros::adi::Pneumatics Matchloader;
 extern pros::adi::Pneumatics ODOM_Lift;
-
-extern pros::Optical SkIbIdI_oPtIcAl;
