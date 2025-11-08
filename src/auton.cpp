@@ -7,6 +7,7 @@
 #include "skills_auton.h"
 #include "finals_auton.h"
 #include "helpers.hpp"
+#include <random>
 
 ASSET(path1_txt);
 ASSET(path3_txt);
@@ -41,57 +42,87 @@ void auton(int autonToRun) {
     {
         pid_test();
     }
+
+    if (autonToRun == 6)
+    {
+        Left_6B_1G();
+    }
 };
 
 void Left_7B_2G()
 {
-    // Initialise
-    chassis.setPose(-50.425, 15, 0);
-    startIntaking();
-    setBlockMovementTarget(INTAKE);
-
-    // Move to matchloader
-    chassis.moveToPose(-47, 45, 0, 1000);
-    chassis.turnToHeading(270, 1000);
-    chassis.waitUntilDone();
-
-    // Collect blocks from matchloader
-    Matchloader.extend();
-    chassis.moveToPose(-62, 45, 270, 1500);
-    for (int i = 0; i < 3; i++) {
-        chassis.moveToPoint(-68, 45, 400);
-        chassis.moveToPoint(-62, 45, 400);
-    }
- 
-    // Move to long goal
-    chassis.moveToPoint(-55, 45, 1000);
-    chassis.waitUntilDone();
-    Matchloader.retract();
-    pros::delay(200);
-    chassis.turnToHeading(90, 1000, {.minSpeed = 70});
-    chassis.moveToPose(-32, 45, 90, 1000, {.maxSpeed = 80});
-    chassis.waitUntilDone();
-
-    // Score all 3 blocks in the long goal
-    setBlockMovementTarget(LONG_GOAL);
-    startScoring();
-    pros::delay(2700);
-
-    // Move back slightly
-    chassis.moveToPoint(-57, 45, 3000, {.forwards=false});
-    chassis.turnToHeading(135, 500);
+    Left();
 
     // Intake 3 blocks and score in the high goal
     Top_Roller.move_velocity(-8000);
     setBlockMovementTarget(HIGH_GOAL);
-    chassis.moveToPoint(-24.8, 10, 2000, {.maxSpeed = 70});
+    startIntaking();
+    chassis.moveToPoint(-25, 12.5, 2000, {.maxSpeed = 70});
+    chassis.waitUntilDone();
+    chassis.turnToPoint(-65, 50, 1000);
+    chassis.waitUntilDone();
+    startScoring();
+    // Ram
+    chassis.moveToPoint(-11, 5, 2000, {.forwards = false, .minSpeed = 100});
+}
+
+void Left_6B_1G()
+{
+    Left();
+
+    chassis.moveToPose(-13, 55, 90, 2000, {.forwards = true});
+    chassis.waitUntilDone();
+    Matchloader.extend();
+    chassis.moveToPose(-10, 50, 120, 2000);
+    chassis.waitUntilDone();
+    chassis.moveToPose(-13, 55, 90, 2000, {.forwards = false});
+    chassis.waitUntilDone();
+    Matchloader.retract();
+    startIntaking();
+    chassis.moveToPoint(-9, 55, 1000);
+    chassis.waitUntilDone();
+    pros::delay(100);
+    chassis.moveToPose(-50, 43, 90, 1300);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-35, 43, 1000, {.forwards = false, .maxSpeed = 70});
+    startScoring();
+}
+
+void Left()
+{
+    right_mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    left_mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    chassis.setPose(-50.425, 18, 0);
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
+
+    // Move to matchloader
+    chassis.moveToPose(-47, 49, 0, 1000, {}, true);
+    chassis.turnToHeading(270, 1000);
+
+    // Collect blocks from matchloader
+    Matchloader.extend();
+    chassis.moveToPose(-60, 43, 270, 1500);
+    for (int i = 0; i < 3; i++) {
+        chassis.moveToPoint(-66.5, 43, 450, {.minSpeed = 80});
+        chassis.moveToPoint(-62.5, 43, 450);
+    }
+    Matchloader.retract();
+ 
+    // Move to long goal
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-35, 43, 1000, {.forwards = false, .maxSpeed = 70});
     chassis.waitUntilDone();
 
-    // Pause
-    pros::delay(900);
+    // Score all 4 blocks in the long goal
+    setBlockMovementTarget(LONG_GOAL);
+    startScoring();
+    pros::delay(2700);
+    stopScoring();
 
-    // Ram
-    chassis.moveToPoint(-20, 10,2000, {.minSpeed = 100});
+    // Move back slightly
+    chassis.moveToPoint(-50, 43, 1000);
+    chassis.waitUntilDone();
 }
 
 void Right_7B_2G()
@@ -103,44 +134,37 @@ void Right_7B_2G()
     setBlockMovementTarget(INTAKE);
 
     // Move to matchloader
-    chassis.moveToPose(47, 48, 0, 1000);
+    chassis.moveToPose(47, 49, 0, 1900, {}, true);
     chassis.turnToHeading(90, 1000);
-    chassis.waitUntilDone();
 
     // Collect blocks from matchloader
     Matchloader.extend();
-    chassis.moveToPose(60, 46, 90, 1500);
+    chassis.moveToPose(60, 43, 90, 1500);
     for (int i = 0; i < 3; i++) {
-        chassis.moveToPoint(61.5, 46, 450, {.minSpeed = 100});
-        chassis.moveToPoint(59.5, 46, 450, {.minSpeed = 100});
+        chassis.moveToPoint(64, 43, 450, {.minSpeed = 100});
+        chassis.moveToPoint(60.3, 43, 450, {.minSpeed = 100});
     }
  
     // Move to long goal
     chassis.waitUntilDone();
-    chassis.moveToPoint(56, 47.6, 1000);
-    Matchloader.retract();
-    pros::delay(100);
-    chassis.turnToHeading(90, 1000, {.minSpeed = 70});
-    chassis.moveToPoint(34, 47.6, 1900, {.maxSpeed = 70});
+    chassis.moveToPoint(34, 43, 1900, {.forwards = false, .maxSpeed = 70});
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal
     setBlockMovementTarget(LONG_GOAL);
     startScoring();
     pros::delay(2700);
-    // Inside_Roller.brake();
-    // Switcheroo.toggle();
-    pros::delay(200);
+    stopScoring();
 
     // Move back slightly
-    chassis.moveToPoint(50, 46, 1000, {.forwards=false});
+    chassis.moveToPoint(50, 43, 1000);
+    chassis.waitUntilDone();
 
     // Score 3 blocks in the low goal
+    bottomRollerMove(12000);
     chassis.turnToHeading(225, 500);
-    chassis.moveToPoint(25, 16.7, 2000, {.maxSpeed = 50});
-    
     chassis.waitUntilDone();
-    // Inside_Roller.move_velocity(-75);
-    // Top_Roller.move_velocity(-32);
-    Matchloader.toggle();
+    chassis.moveToPoint(21.4, 11, 2000, {.maxSpeed = 60});
+    chassis.waitUntilDone();
+    bottomRollerMove(-12000);
 }

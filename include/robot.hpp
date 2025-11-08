@@ -1,5 +1,6 @@
 #include "../include/main.h"
 #include "lemlib/api.hpp"
+#include "pros/adi.hpp"
 
 extern pros::Controller master;
 extern pros::Controller partner;
@@ -30,6 +31,7 @@ extern pros::Motor Top_Roller;
 extern pros::Motor Bottom_Roller_Blue;
 extern pros::Motor Bottom_Roller_Green;
 
+extern pros::adi::Pneumatics Descorer;
 extern pros::adi::Pneumatics Double_Park;
 extern pros::adi::Pneumatics Matchloader;
 extern pros::adi::Pneumatics ODOM_Lift;

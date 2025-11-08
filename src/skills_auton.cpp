@@ -194,7 +194,132 @@ void new_skills_auton()
 
 void pid_test()
 {
-    chassis.setPose(-61.878, -16.42,  90);
-    chassis.turnToHeading(0, 10000);
-    // chassis.follow(testpath_txt, 1.3, 3000, true, false);
+    // chassis.moveToPoint(-46.768, -46.868, 1000);
+    // chassis.waitUntilDone();
+    // pros::delay(100);
+    // chassis.turnToHeading(270, 1000);
+    // chassis.waitUntilDone();
+    // Matchloader.extend();
+    // chassis.moveToPoint(-55, -46.868, 1000);
+    // startIntaking();
+    // setBlockMovementTarget(INTAKE);
+    // for (int i = 0; i < 7; i++) {
+    //     chassis.moveToPoint(-61, -46.868, 450, {.minSpeed = 100});
+    //     chassis.moveToPoint(-58.4, -46.868, 450);
+    // }
+    // chassis.moveToPoint(-29, -46.868, 1500, {.forwards = false});
+    // chassis.waitUntilDone();
+    // startScoring();
+    chassis.setPose(-46.768, -15.046,  180);
+    chassis.moveToPoint(-46.768, -46.639, 1000);
+    chassis.waitUntilDone();
+    chassis.turnToHeading(270, 1000);
+    chassis.waitUntilDone();
+    Matchloader.extend();
+    chassis.moveToPoint(-55, -46.868, 1000);
+    startIntaking();
+    setBlockMovementTarget(INTAKE);
+    for (int i = 0; i < 7; i++) {
+        chassis.moveToPoint(-60.5, -46.868, 450, {.minSpeed = 110});
+        chassis.moveToPoint(-55.5, -46.868, 450);
+    }
+    chassis.moveToPoint(-60.5, -46.868, 450, {.minSpeed = 110});
+    pros::delay(300);
+
+    // Go to the long goal and score 3 blue blocks
+    chassis.moveToPoint(-56.154, -46.639, 2000);
+
+    for (int i = 0; i < 4; i++)
+    {
+        startOuttaking();
+        pros::delay(50);
+        startIntaking();
+        pros::delay(50);
+    }
+    
+    chassis.waitUntilDone();
+    chassis.moveToPoint(-29, -46.639, 1000, {.forwards = false});
+    chassis.waitUntilDone();
+    startScoring();
+    pros::delay(2100);
+    stopScoring();
+
+    // Go to the other matchloader
+    chassis.moveToPoint(-40, -46.639, 2000);
+    chassis.waitUntilDone();
+    chassis.moveToPose(8.636, -31.987, 90, 3000, {.lead = 0.6});
+    chassis.waitUntilDone();
+    chassis.moveToPose(27, -31.987, 90, 1500);
+    chassis.waitUntilDone();
+    chassis.moveToPose(56.484, -46.868, 90, 2000);
+    chassis.waitUntilDone();
+
+    // Intake 3 blocks
+    startIntaking();
+    for (int i = 0; i < 3; i++) {
+        chassis.moveToPoint(57, -46.868, 450, {.minSpeed = 110});
+        chassis.moveToPoint(52, -46.868, 450);
+    }
+    pros::delay(200);
+
+    chassis.moveToPoint(27, -46.868, 2000, {.forwards = false});
+    for (int i = 0; i < 4; i++)
+    {
+        startOuttaking();
+        pros::delay(50);
+        startIntaking();
+        pros::delay(50);
+    }
+    chassis.waitUntilDone();
+    startScoring();
+    pros::delay(1300);
+    stopScoring();
+
+    chassis.moveToPoint(56.484, -46.868, 2000);
+    chassis.waitUntilDone();
+    startIntaking();
+    for (int i = 0; i < 4; i++) {
+        chassis.moveToPoint(57, -46.868, 450, {.minSpeed = 110});
+        chassis.moveToPoint(52, -46.868, 450);
+    }
+    pros::delay(200);
+
+    chassis.moveToPoint(27, -46.868, 2000, {.forwards = false});
+    chassis.waitUntilDone();
+    startScoring();
+    pros::delay(3000);
+    stopScoring();
+
+    // Go to next matchloader and intake 3 blocks
+    chassis.moveToPoint(56.484, 46.868, 2000);
+    chassis.waitUntilDone();
+    // Intake 3 blocks
+    startIntaking();
+    for (int i = 0; i < 3; i++) {
+        chassis.moveToPoint(57, 46.868, 450, {.minSpeed = 110});
+        chassis.moveToPoint(52, 46.868, 450);
+    }
+    pros::delay(200);
+
+    chassis.moveToPoint(27, 46.868, 2000, {.forwards = false});
+    for (int i = 0; i < 4; i++)
+    {
+        startOuttaking();
+        pros::delay(50);
+        startIntaking();
+        pros::delay(50);
+    }
+    chassis.waitUntilDone();
+    startScoring();
+    pros::delay(1300);
+    stopScoring();
+
+    chassis.moveToPoint(56.484, 46.868, 2000);
+    chassis.waitUntilDone();
+    startIntaking();
+    for (int i = 0; i < 4; i++) {
+        chassis.moveToPoint(57, 46.868, 450, {.minSpeed = 110});
+        chassis.moveToPoint(52, 46.868, 450);
+    }
+    pros::delay(200);
 }

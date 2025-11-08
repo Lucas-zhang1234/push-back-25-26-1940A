@@ -24,12 +24,19 @@ void stopScoring() {
 void startIntaking() {
     stopIntaking();
     // LEGACY
-    bottomRollerMove(-12000);
-    Top_Roller.move(12000);
+    bottomRollerMove(12000);
 }
 
 void stopIntaking() {
     stopScoring();
+    bottomRollerMove(0);
+}
+
+void startOuttaking() {
+    bottomRollerMove(-12000);
+}
+
+void stopOuttaking() {
     bottomRollerMove(0);
 }
 

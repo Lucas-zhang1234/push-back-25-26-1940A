@@ -80,7 +80,8 @@ void autonomous() {
 	// 3 = left finals match
 	// 4 = right finals match
 	// 5 = pid test
-	auton(5);
+	// 6 = left match with 1831D
+	auton(6);
 	// // Auton selector
 	// int autonToRun;
 	// // Loop until a valid button is pressed to select an auton
@@ -153,16 +154,22 @@ void opcontrol() {
 		}
 		 
 		// Matchloader and Switcheroo have activation buttons opposite to the actual buttons that activate them.
-		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
-			setBlockMovementTarget(LONG_GOAL);
-		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-			setBlockMovementTarget(INTAKE);
-		}
+		// if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
+		// 	setBlockMovementTarget(LONG_GOAL);
+		// } else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
+		// 	setBlockMovementTarget(INTAKE);
+		// }
 
 		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
-			Double_Park.extend();
-		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
 			Double_Park.retract();
+		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
+			Double_Park.extend();
+		}
+
+		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+			Descorer.extend();
+		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+			Descorer.retract();
 		}
 
 		pros::delay(20);                               // Run for 20 ms then update

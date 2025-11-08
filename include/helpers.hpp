@@ -15,6 +15,10 @@ void startIntaking();
 
 void stopIntaking();
 
+void startOuttaking();
+
+void stopOuttaking();
+
 void swapScoringTarget();
 
 void setBlockMovementTarget(BlockMoveTarget target);

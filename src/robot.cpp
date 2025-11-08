@@ -1,8 +1,11 @@
 #include "robot.hpp"
+#include "lemlib/chassis/chassis.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.hpp"
+#include "pros/device.hpp"
 #include "pros/optical.hpp"
+#include "pros/rotation.hpp"
 
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::Controller partner(pros::E_CONTROLLER_PARTNER);
@@ -17,12 +20,12 @@ lemlib::Drivetrain drivetrain(&left_mg, &right_mg,
                               2 // Drift was 2  0.5
 );
 
-pros::Imu imu(9); 
-
-
+pros::Imu imu(9);
+pros::Rotation horizontalRotation(15); 
+lemlib::TrackingWheel horizontal_tracking_wheel(&horizontalRotation, lemlib::Omniwheel::NEW_2, 1.5);
 lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1, set to null
                             nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-                            nullptr, // horizontal tracking wheel 1
+                            &horizontal_tracking_wheel, // horizontal tracking wheel 1
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
 );
@@ -31,7 +34,7 @@ lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel 1, set to null
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              10, // derivative gain (kD)
+                                              69, // derivative gain (kD)
                                               0, // anti windup
                                               0, // small error range, in inches
                                               0, // small error range timeout, in milliseconds
@@ -64,6 +67,7 @@ pros::Motor Bottom_Roller_Blue(21, pros::v5::MotorGears::blue);
 pros::Motor Bottom_Roller_Green(2, pros::v5::MotorGears::green);
 
 
-pros::adi::Pneumatics Double_Park({22, 'g'}, true);            // Starts retracted, extends when the ADI port is high
-pros::adi::Pneumatics Matchloader({22, 'h'}, false);
+pros::adi::Pneumatics Double_Park({22, 'b'}, false);
+pros::adi::Pneumatics Matchloader({22, 'a'}, false);
+pros::adi::Pneumatics Descorer({22, 'c'}, false);
 pros::adi::Pneumatics ODOM_Lift({22, 'e'},false);
