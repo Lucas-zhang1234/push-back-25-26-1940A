@@ -80,7 +80,7 @@ void Left_7B_2G()
 
     // Intake 3 blocks and score in the high goal
     Top_Roller.move_velocity(-8000);
-    Switcheroo.toggle();
+    
     chassis.moveToPoint(-24.8, 10, 2000, {.maxSpeed = 70});
     chassis.waitUntilDone();
 
@@ -120,7 +120,7 @@ void Right_7B_2G()
     Matchloader.retract();
     pros::delay(100);
     chassis.turnToHeading(90, 1000, {.minSpeed = 70});
-    chassis.moveToPoint(34, 47.6, 1900, {.maxSpeed = 70});
+    chassis.moveToPoint(34, 47.3, 1900, {.maxSpeed = 70});
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal

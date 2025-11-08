@@ -69,7 +69,7 @@ void skills_auton() {
     chassis.turnToHeading(270, 1000, {.direction = lemlib::AngularDirection::CW_CLOCKWISE});
     chassis.waitUntilDone();
     pros::delay(200);
-    chassis.moveToPose(28.4, firstMatchloaderY - 4.2, 270, 1800, {.maxSpeed = 70});
+    chassis.moveToPose(28.4, firstMatchloaderY - 1, 270, 1800, {.maxSpeed = 70});
     chassis.waitUntilDone();
 
     // Score all 4 blocks in the long goal
@@ -122,7 +122,7 @@ void skills_auton() {
     chassis.waitUntilDone();
     Matchloader.retract();
     pros::delay(100);
-    chassis.moveToPose(22, secondMatchloaderY + 0.3, 90, 1000);
+    chassis.moveToPose(21, secondMatchloaderY + 0.3, 90, 1000);
     chassis.waitUntilDone();
     pros::delay(200);
 
@@ -183,6 +183,6 @@ void skills_auton() {
     chassis.turnToHeading(217, 1000);
     chassis.waitUntilDone();
     pros::delay(100);
-    chassis.moveToPoint(68.5, 8.8, 15000, {.minSpeed = 85});
+    chassis.moveToPoint(70, 10, 15000, {.minSpeed = 85});
     right_mg.move_velocity(450);
-};
+}
