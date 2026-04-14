@@ -180,11 +180,11 @@ void opcontrol() {
 		} else {
 			Top_Roller.move(0);
 		}	
-		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
 			Wing.toggle();
 		}
 		
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
 			Matchloader.toggle();
 		}
 		 
