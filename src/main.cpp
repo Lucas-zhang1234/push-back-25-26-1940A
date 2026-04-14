@@ -257,8 +257,9 @@ void opcontrol() {
 		}
 		 
 		// Matchloader and Switcheroo have activation buttons opposite to the actual buttons that activate them.
-		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)){
 			Intake_Lift.extend();
+			First_Stage_Intake.move_voltage(-4000);
 			controllerHighGoal = true;
 		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)){
 			Intake_Lift.retract();
