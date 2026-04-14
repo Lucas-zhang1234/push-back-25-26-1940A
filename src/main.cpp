@@ -126,7 +126,7 @@ void autonomous() {
 void opcontrol() {
 	int isHighGoal = 127;
     bool controllerHighGoal = false;
-	bool slowDownTopRoller = false;
+	bool slowDownTopRoller = true;
 	Wing.retract();
 	right_mg.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
     left_mg.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
@@ -165,13 +165,13 @@ void opcontrol() {
 		} else {
 			Conveyer.move(0);
 		}	
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             if (controllerHighGoal) {
                 Top_Roller.move_voltage(-81);
             } else {
                 Top_Roller.move_voltage(-12000);
             }
-		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+		} else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
             if (controllerHighGoal) {
                 Top_Roller.move_voltage(81);
             } else {
@@ -180,40 +180,18 @@ void opcontrol() {
 		} else {
 			Top_Roller.move(0);
 		}	
-		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) {
-			Wing.extend();
-		} else if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-			Wing.retract();
+		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+			Wing.toggle();
 		}
-        if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-            slowDownTopRoller=true;
-        } else if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-            slowDownTopRoller = false;
-        }
-
-        if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)) {
-            Wing.extend();
-        }
-	
-		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L1)) {
-			Matchloader.extend();
-		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
-			Matchloader.retract();
+		
+		if (master.get_digital(pros::E_CONTROLLER_DIGITAL_B)){
+			Matchloader.toggle();
 		}
 		 
 		// Matchloader and Switcheroo have activation buttons opposite to the actual buttons that activate them.
-		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)){
-			Trapdoor.extend();
-			controllerHighGoal = true;
-		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-			Trapdoor.retract();
-			controllerHighGoal = false;
-		}
-
-		if (partner.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
-			Double_Park.extend();
-		} else if (partner.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN)){
-			Double_Park.retract();
+		if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+			Trapdoor.toggle();
+			controllerHighGoal = controllerHighGoal ? false : true; 
 		}
 
 		pros::delay(20);                               // Run for 20 ms then update
